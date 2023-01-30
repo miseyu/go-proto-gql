@@ -10,7 +10,7 @@ import (
 	"google.golang.org/protobuf/compiler/protogen"
 	descriptor "google.golang.org/protobuf/types/descriptorpb"
 
-	gqlpb "github.com/danielvladco/go-proto-gql/pkg/graphqlpb"
+	gqlpb "github.com/miseyu/go-proto-gql/pkg/graphqlpb"
 )
 
 const (
@@ -237,7 +237,7 @@ func (s *SchemaDescriptor) uniqueName(d desc.Descriptor, input bool) (name strin
 		collisionPrefix = CamelCaseSlice(strings.Split(d.GetFile().GetPackage(), packageSep))
 	}
 
-	originalName := name
+	name = collisionPrefix + typeSep + name
 	for uniqueSuffix := 0; ; uniqueSuffix++ {
 		d2, ok := s.reservedNames[name]
 		if !ok {
@@ -247,10 +247,9 @@ func (s *SchemaDescriptor) uniqueName(d desc.Descriptor, input bool) (name strin
 			return name
 		}
 		if uniqueSuffix == 0 {
-			name = collisionPrefix + typeSep + originalName
 			continue
 		}
-		name = collisionPrefix + typeSep + originalName + strconv.Itoa(uniqueSuffix)
+		name = name + strconv.Itoa(uniqueSuffix)
 	}
 
 	s.reservedNames[name] = d
