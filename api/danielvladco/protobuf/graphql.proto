@@ -11,6 +11,10 @@ extend google.protobuf.MessageOptions {
     optional Msg msg = 65030;
 }
 
+extend google.protobuf.EnumOptions {
+    optional Enumopt enumopt = 65030;
+}
+
 extend google.protobuf.MethodOptions {
     optional Rpc rpc = 65030;
 }
@@ -54,6 +58,10 @@ message Svc {
 }
 
 message Msg {
+    optional bool prefix = 1;
+}
+
+message Enumopt {
     optional bool prefix = 1;
 }
 

@@ -54,6 +54,13 @@ service Query {
     rpc Subscribe (Data) returns (stream Data); // must be a subscription
 }
 
+enum Bar {
+    option (danielvladco.protobuf.graphql.enumopt) = {prefix: true};
+	BAR1 = 0;
+    BAR2 = 1;
+    BAR3 = 2;
+}
+
 message Data {
     string string_x = 1 [(danielvladco.protobuf.graphql.field) = {required: true}]; // must be required
     Foo2 foo = 2 [(danielvladco.protobuf.graphql.field) = {required: true}]; // must be required
@@ -64,6 +71,7 @@ message Data {
     string bar = 7 [(danielvladco.protobuf.graphql.field) = {name: "bars"}];
     string string = 8 [(danielvladco.protobuf.graphql.field) = {name: "str"}];
     string ignore = 9 [(danielvladco.protobuf.graphql.field) = {ignore: true}];
+    Bar fuga = 10;
 }
 
 message Foo2 {
