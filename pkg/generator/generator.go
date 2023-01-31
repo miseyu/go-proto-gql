@@ -223,9 +223,20 @@ func (s *SchemaDescriptor) GetQuery() *RootDefinition {
 // make name be unique
 // just create a map and register every name
 func (s *SchemaDescriptor) uniqueName(d desc.Descriptor, input bool) (name string) {
-	var collisionPrefix string
-	var suffix string
-	if _, ok := d.(*desc.MessageDescriptor); input && ok {
+	var (
+		collisionPrefix string
+		suffix          string
+		isPrefix        bool
+	)
+
+	if v, ok := d.(*desc.MessageDescriptor); input && ok {
+		opts := v.AsDescriptorProto().GetOptions()
+		if opts != nil {
+			msg := GraphqlMessageOptions(opts)
+			if msg != nil && msg.Prefix != nil {
+				isPrefix = *msg.Prefix
+			}
+		}
 		suffix = inputSuffix
 	}
 	name = strings.Title(CamelCaseSlice(strings.Split(strings.TrimPrefix(d.GetFullyQualifiedName(), d.GetFile().GetPackage()+packageSep), packageSep)) + suffix)
@@ -237,7 +248,10 @@ func (s *SchemaDescriptor) uniqueName(d desc.Descriptor, input bool) (name strin
 		collisionPrefix = CamelCaseSlice(strings.Split(d.GetFile().GetPackage(), packageSep))
 	}
 
-	name = collisionPrefix + typeSep + name
+	originalName := name
+	if isPrefix {
+		name = collisionPrefix + typeSep + originalName
+	}
 	for uniqueSuffix := 0; ; uniqueSuffix++ {
 		d2, ok := s.reservedNames[name]
 		if !ok {
@@ -247,9 +261,10 @@ func (s *SchemaDescriptor) uniqueName(d desc.Descriptor, input bool) (name strin
 			return name
 		}
 		if uniqueSuffix == 0 {
+			name = collisionPrefix + typeSep + originalName
 			continue
 		}
-		name = name + strconv.Itoa(uniqueSuffix)
+		name = collisionPrefix + typeSep + originalName + strconv.Itoa(uniqueSuffix)
 	}
 
 	s.reservedNames[name] = d

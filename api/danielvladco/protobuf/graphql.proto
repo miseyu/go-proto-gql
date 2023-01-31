@@ -7,6 +7,10 @@ import "google/protobuf/descriptor.proto";
 
 // TODO: Email protobuf-global-extension-registry@google.com to get an extension ID.
 
+extend google.protobuf.MessageOptions {
+    optional Msg msg = 65030;
+}
+
 extend google.protobuf.MethodOptions {
     optional Rpc rpc = 65030;
 }
@@ -47,6 +51,10 @@ message Svc {
     optional bool ignore = 2;
     optional string name = 3;
     optional Upstream upstream = 4;
+}
+
+message Msg {
+    optional bool prefix = 1;
 }
 
 enum Type {

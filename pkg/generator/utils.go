@@ -43,6 +43,16 @@ func GraphqlFieldOptions(opts proto.Message) *gqlpb.Field {
 	return nil
 }
 
+func GraphqlMessageOptions(opts proto.Message) *gqlpb.Msg {
+	if opts != nil {
+		v := proto.GetExtension(opts, gqlpb.E_Msg)
+		if v != nil && v.(*gqlpb.Msg) != nil {
+			return v.(*gqlpb.Msg)
+		}
+	}
+	return nil
+}
+
 func GraphqlOneofOptions(opts proto.Message) *gqlpb.Oneof {
 	if opts != nil {
 		v := proto.GetExtension(opts, gqlpb.E_Oneof)

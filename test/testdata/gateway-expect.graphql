@@ -69,11 +69,11 @@ type Foo_Foo2 {
 input Foo_Foo2Input {
 	param1: String
 }
-type GoogleProtobuf_Timestamp {
+type Timestamp1 {
 	seconds: Int
 	nanos: Int
 }
-input GoogleProtobuf_TimestampInput {
+input TimestampInput {
 	seconds: Int
 	nanos: Int
 }
@@ -319,7 +319,7 @@ type Query {
 }
 type Ref {
 	localTime2: Timestamp
-	external: GoogleProtobuf_Timestamp
+	external: Timestamp1
 	localTime: Timestamp
 	file: Baz
 	fileMsg: Foo
@@ -332,7 +332,7 @@ type Ref {
 }
 input RefInput {
 	localTime2: TimestampInput
-	external: GoogleProtobuf_TimestampInput
+	external: TimestampInput
 	localTime: TimestampInput
 	file: BazInput
 	fileMsg: FooInput
@@ -352,7 +352,7 @@ input Ref_BarInput {
 type Ref_Foo {
 	bar1: Ref_Foo_Bar
 	localTime2: Timestamp
-	externalTime1: GoogleProtobuf_Timestamp
+	externalTime1: Timestamp1
 	bar2: Ref_Bar
 	en1: Ref_Foo_En
 	en2: Ref_Foo_Bar_En
@@ -360,7 +360,7 @@ type Ref_Foo {
 input Ref_FooInput {
 	bar1: Ref_Foo_BarInput
 	localTime2: TimestampInput
-	externalTime1: GoogleProtobuf_TimestampInput
+	externalTime1: TimestampInput
 	bar2: Ref_BarInput
 	en1: Ref_Foo_En
 	en2: Ref_Foo_Bar_En

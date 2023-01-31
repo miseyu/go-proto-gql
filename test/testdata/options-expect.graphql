@@ -14,10 +14,10 @@ type Data {
 }
 input DataInput {
 	stringX: String!
-	foo: Foo2Input!
+	foo: Options_Foo2Input!
 	double: [Float!]!
 	string2: String
-	foo2: Foo2Input
+	foo2: Options_Foo2Input
 	double2: [Float!]
 	bars: String @goField(name: "Bar")
 	str: String @goField(name: "String_")
@@ -25,7 +25,7 @@ input DataInput {
 type Foo2 {
 	param1: String
 }
-input Foo2Input {
+input Options_Foo2Input {
 	param1: String
 }
 type Mutation {
