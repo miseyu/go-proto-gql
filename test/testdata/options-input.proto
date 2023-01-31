@@ -67,5 +67,6 @@ message Data {
 }
 
 message Foo2 {
+    option (danielvladco.protobuf.graphql.msg) = {prefix: true};
     string param1 = 1;
 }
