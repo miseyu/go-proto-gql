@@ -229,7 +229,7 @@ func (s *SchemaDescriptor) uniqueName(d desc.Descriptor, input bool) (name strin
 		isPrefix        bool
 	)
 
-	if v, ok := d.(*desc.MessageDescriptor); input && ok {
+	if v, ok := d.(*desc.MessageDescriptor); ok {
 		opts := v.AsDescriptorProto().GetOptions()
 		if opts != nil {
 			msg := GraphqlMessageOptions(opts)
@@ -237,7 +237,18 @@ func (s *SchemaDescriptor) uniqueName(d desc.Descriptor, input bool) (name strin
 				isPrefix = *msg.Prefix
 			}
 		}
-		suffix = inputSuffix
+		if input {
+			suffix = inputSuffix
+		}
+	}
+	if v, ok := d.(*desc.EnumDescriptor); ok {
+		opts := v.AsEnumDescriptorProto().GetOptions()
+		if opts != nil {
+			msg := GraphqlEnumOptions(opts)
+			if msg != nil && msg.Prefix != nil {
+				isPrefix = *msg.Prefix
+			}
+		}
 	}
 	name = strings.Title(CamelCaseSlice(strings.Split(strings.TrimPrefix(d.GetFullyQualifiedName(), d.GetFile().GetPackage()+packageSep), packageSep)) + suffix)
 
